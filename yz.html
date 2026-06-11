@@ -14,7 +14,6 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            /* 背景图 + 半透明遮罩，自行替换图片名 */
             background: url('背景.jpg') center center / cover no-repeat;
             background-color: rgba(0, 0, 0, 0.4);
             background-blend-mode: darken;
@@ -24,7 +23,6 @@
             align-items: center;
             justify-content: center;
         }
-        /* 渐变标题文字 */
         .title {
             font-size: 48px;
             font-weight: bold;
@@ -35,22 +33,19 @@
             margin-bottom: 30px;
             filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
         }
-        /* 北京时间 */
         .time {
             font-size: 36px;
             color: #ffffff;
             margin-bottom: 40px;
             letter-spacing: 2px;
-            filter: drop-shadow(0 0 3px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 0 3px rgba(0,0,0.8));
         }
-        /* 红色提示文字 */
         .tip {
             font-size: 20px;
             color: #ff4444;
             font-weight: 500;
             filter: drop-shadow(0 0 3px rgba(0,0,0.8));
         }
-        /* 樱花花瓣（透明化） */
         .sakura {
             position: fixed;
             top: -15px;
@@ -73,30 +68,15 @@
     </style>
 </head>
 <body>
+    <audio autoplay loop preload="auto" style="display:none;">
+        <source src="背景音乐.aac" type="audio/aac">
+    
+
     <h1 class="title">ys拦截成功</h1>
     <div class="time" id="beijingTime"></div>
     <div class="tip">本拦截不会自动关闭需执行恢复文件</div>
 
-    <!-- 背景音乐：背景音乐.aac 循环播放 -->
-    <audio id="bgMusic" muted autoplay loop preload="auto">
-        <source src="背景音乐.aac" type="audio/aac">
-        浏览器不支持当前音频格式
-    
-
     <script>
-        const bgMusic = document.getElementById('bgMusic');
-        // 点击页面解除静音，正常播放音乐
-        document.addEventListener('click', () => {
-            bgMusic.muted = false;
-            bgMusic.volume = 1;
-        }, { once: true });
-        // 适配移动端触摸
-        document.addEventListener('touchstart', () => {
-            bgMusic.muted = false;
-            bgMusic.volume = 1;
-        }, { once: true });
-
-        // 实时北京时间
         function updateTime() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('zh-CN', {
@@ -110,7 +90,6 @@
         updateTime();
         setInterval(updateTime, 1000);
 
-        // 樱花飘落特效
         function createSakura() {
             const sakura = document.createElement('div');
             sakura.classList.add('sakura');
