@@ -14,9 +14,9 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            /* 背景图+半透明遮罩，自行替换图片名 */
-            background: url('背景.jpg') center center / cover no-repeat;
-            background-color: rgba(0, 0, 0, 0.35);
+            /* 背景换成你的图片，并设置透明化 */
+            background: url('your_image.jpg') center center / cover no-repeat;
+            background-color: rgba(0, 0, 0, 0.4); /* 背景叠加半透明黑，保证文字清晰 */
             background-blend-mode: darken;
             font-family: "Microsoft Yahei", sans-serif;
             display: flex;
@@ -24,6 +24,7 @@
             align-items: center;
             justify-content: center;
         }
+        /* 渐变标题文字 */
         .title {
             font-size: 48px;
             font-weight: bold;
@@ -32,21 +33,25 @@
             background-clip: text;
             color: transparent;
             margin-bottom: 30px;
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.6));
+            /* 给文字加一点阴影，防止被背景冲掉 */
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
         }
+        /* 北京时间样式 */
         .time {
             font-size: 36px;
             color: #ffffff;
             margin-bottom: 40px;
             letter-spacing: 2px;
-            filter: drop-shadow(0 0 3px rgba(0,0,0.8));
+            filter: drop-shadow(0 0 3px rgba(0,0,0,0.8));
         }
+        /* 红色提示文字 */
         .tip {
             font-size: 20px;
             color: #ff4444;
             font-weight: 500;
-            filter: drop-shadow(0 0 3px rgba(0,0,0.8));
+            filter: drop-shadow(0 0 3px rgba(0,0,0,0.8));
         }
+        /* 樱花花瓣样式 */
         .sakura {
             position: fixed;
             top: -15px;
@@ -54,10 +59,11 @@
             height: 12px;
             background: #ffc0cb;
             border-radius: 50%;
-            opacity: 0.7;
+            opacity: 0.7; /* 花瓣也稍微透明，不抢背景风头 */
             pointer-events: none;
             animation: sakuraFall linear infinite;
         }
+        /* 花瓣下落动画 */
         @keyframes sakuraFall {
             0% {
                 transform: translateY(0) rotate(0deg);
@@ -66,10 +72,6 @@
                 transform: translateY(100vh) rotate(720deg);
             }
         }
-        /* 隐藏音频标签 */
-        audio {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -77,20 +79,7 @@
     <div class="time" id="beijingTime"></div>
     <div class="tip">本拦截不会自动关闭需执行恢复文件</div>
 
-    <!-- 隐藏式背景音乐，AAC格式，循环播放 -->
-    <audio id="bgMusic" autoplay muted loop preload="auto">
-        <source src="背景音乐.aac" type="audio/aac">
-        您的浏览器不支持AAC音频格式
-    
-
     <script>
-        const bgMusic = document.getElementById('bgMusic');
-        // 点击页面任意位置解除静音，开始播放声音
-        document.addEventListener('click', () => {
-            bgMusic.muted = false;
-            bgMusic.volume = 1;
-        }, { once: true });
-
         // 实时更新北京时间
         function updateTime() {
             const now = new Date();
