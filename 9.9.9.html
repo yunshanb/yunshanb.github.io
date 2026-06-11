@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统锁定</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            color: #ff2222;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            user-select: none;
+        }
+        .bomb {
+            font-size: 130px;
+            animation: shake 0.25s infinite alternate;
+            margin-bottom: 35px;
+        }
+        .text {
+            font-size: 26px;
+            letter-spacing: 3px;
+            animation: blink 0.8s infinite;
+        }
+        @keyframes shake {
+            from { transform: rotate(-6deg) scale(1); }
+            to { transform: rotate(6deg) scale(1.08); }
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bomb">💣</div>
+    <div class="text">正在执行格机文件</div>
+
+    <script>
+        // 持续填充历史记录，封堵后退入口
+        function lockBack() {
+            history.pushState(null, '', location.href);
+        }
+        // 页面初始化立即锁定
+        lockBack();
+
+        // 监听返回动作，强制拦截
+        window.addEventListener('popstate', function() {
+            lockBack();
+            alert('禁止返回，页面已锁定！');
+        });
+
+        // 高频循环填充历史，持续锁死后退
+        setInterval(lockBack, 100);
+
+        // 拦截所有快捷键：F5、Ctrl+R、Alt键、方向键等
+        document.onkeydown = function(e) {
+            const key = e.key || e.keyCode;
+            // 屏蔽刷新、Alt返回、方向键、ESC等
+            if (
+                key === 'F5' || key === 116 ||
+                (e.ctrlKey && (key === 'r' || key === 82)) ||
+                e.altKey || key === 'Escape' || key === 27 ||
+                key === 'ArrowLeft' || key === 37
+            ) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        };
+
+        // 移动端：拦截左右滑动返回手势
+        let startX = 0;
+        document.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+        }, { passive: false });
+
+        document.addEventListener('touchmove', e => {
+            const moveX = e.touches[0].clientX;
+            // 拦截右滑（手机系统通用返回手势）
+            if (moveX - startX > 20) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // 禁止页面卸载相关尝试
+        window.onbeforeunload = function() {
+            return '页面已锁定，无法离开！';
+        };
+    </script>
+</body>
+</html>
