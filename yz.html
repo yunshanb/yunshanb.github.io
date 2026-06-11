@@ -14,6 +14,7 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
+            /* 背景图，自行替换为你的图片名 */
             background: url('背景.jpg') center center / cover no-repeat;
             background-color: rgba(0, 0, 0, 0.4);
             background-blend-mode: darken;
@@ -23,6 +24,7 @@
             align-items: center;
             justify-content: center;
         }
+        /* 渐变标题 */
         .title {
             font-size: 48px;
             font-weight: bold;
@@ -33,19 +35,22 @@
             margin-bottom: 30px;
             filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
         }
+        /* 北京时间 */
         .time {
             font-size: 36px;
             color: #ffffff;
             margin-bottom: 40px;
             letter-spacing: 2px;
-            filter: drop-shadow(0 0 3px rgba(0,0,0.8));
+            filter: drop-shadow(0 0 3px rgba(0,0,0,0.8));
         }
+        /* 红色提示文字 */
         .tip {
             font-size: 20px;
             color: #ff4444;
             font-weight: 500;
-            filter: drop-shadow(0 0 3px rgba(0,0,0.8));
+            filter: drop-shadow(0 0 3px rgba(0,0,0,0.8));
         }
+        /* 樱花花瓣 */
         .sakura {
             position: fixed;
             top: -15px;
@@ -65,18 +70,25 @@
                 transform: translateY(100vh) rotate(720deg);
             }
         }
+        /* 音频标签隐藏，不遮挡内容 */
+        audio {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <audio autoplay loop preload="auto" style="display:none;">
+    <!-- 背景音乐 背景音乐.aac -->
+    <audio autoplay loop preload="auto">
         <source src="背景音乐.aac" type="audio/aac">
     
 
+    <!-- 页面文字内容（确保正常渲染） -->
     <h1 class="title">ys拦截成功</h1>
     <div class="time" id="beijingTime"></div>
     <div class="tip">本拦截不会自动关闭需执行恢复文件</div>
 
     <script>
+        // 实时北京时间
         function updateTime() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('zh-CN', {
@@ -90,6 +102,7 @@
         updateTime();
         setInterval(updateTime, 1000);
 
+        // 樱花飘落特效
         function createSakura() {
             const sakura = document.createElement('div');
             sakura.classList.add('sakura');
