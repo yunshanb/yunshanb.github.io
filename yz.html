@@ -1,121 +1,109 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YS 拦截状态</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            /* 背景图，自行替换为你的图片名 */
-            background: url('背景.jpg') center center / cover no-repeat;
-            background-color: rgba(0, 0, 0, 0.4);
-            background-blend-mode: darken;
-            font-family: "Microsoft Yahei", sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        /* 渐变标题 */
-        .title {
-            font-size: 48px;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff7eb3, #ffd700, #72efdd);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
-        }
-        /* 北京时间 */
-        .time {
-            font-size: 36px;
-            color: #ffffff;
-            margin-bottom: 40px;
-            letter-spacing: 2px;
-            filter: drop-shadow(0 0 3px rgba(0,0,0,0.8));
-        }
-        /* 红色提示文字 */
-        .tip {
-            font-size: 20px;
-            color: #ff4444;
-            font-weight: 500;
-            filter: drop-shadow(0 0 3px rgba(0,0,0,0.8));
-        }
-        /* 樱花花瓣 */
-        .sakura {
-            position: fixed;
-            top: -15px;
-            width: 12px;
-            height: 12px;
-            background: #ffc0cb;
-            border-radius: 50%;
-            opacity: 0.7;
-            pointer-events: none;
-            animation: sakuraFall linear infinite;
-        }
-        @keyframes sakuraFall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-            }
-        }
-        /* 音频标签隐藏，不遮挡内容 */
-        audio {
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YS 拦截状态</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:url("背景.jpg") center/cover no-repeat;
+  background-color:rgba(0,0,0,0.4);
+  background-blend-mode:darken;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-family:Microsoft Yahei,sans-serif;
+}
+.title{
+  font-size:48px;
+  font-weight:bold;
+  background:linear-gradient(45deg,#ff7eb3,#ffd700,#72efdd);
+  -webkit-background-clip:text;
+  color:transparent;
+  margin-bottom:30px;
+  text-shadow:0 0 8px rgba(0,0,0,0.6);
+}
+.time{
+  font-size:36px;
+  color:#ffffff;
+  margin-bottom:40px;
+  letter-spacing:2px;
+  text-shadow:0 0 6px rgba(0,0,0,0.8);
+}
+.tip{
+  font-size:20px;
+  color:#ff4444;
+  font-weight:500;
+  text-shadow:0 0 6px rgba(0,0,0,0.8);
+}
+.sakura{
+  position:fixed;
+  top:-20px;
+  width:12px;
+  height:12px;
+  background:#ffc0cb;
+  border-radius:50%;
+  opacity:0.7;
+  pointer-events:none;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  0%{transform:translateY(0) rotate(0deg);}
+  100%{transform:translateY(100vh) rotate(360deg);}
+}
+audio{display:none !important;}
+</style>
 </head>
 <body>
-    <!-- 背景音乐 背景音乐.aac -->
-    <audio autoplay loop preload="auto">
-        <source src="背景音乐.aac" type="audio/aac">
-    
+<h1 class="title">ys拦截成功</h1>
+<div class="time" id="nowTime">北京时间：00:00:00</div>
+<div class="tip">本拦截不会自动关闭需执行恢复文件</div>
 
-    <!-- 页面文字内容（确保正常渲染） -->
-    <h1 class="title">ys拦截成功</h1>
-    <div class="time" id="beijingTime"></div>
-    <div class="tip">本拦截不会自动关闭需执行恢复文件</div>
+<audio autoplay loop preload="auto">
+  <source src="背景音乐.aac" type="audio/aac">
 
-    <script>
-        // 实时北京时间
-        function updateTime() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('zh-CN', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            });
-            document.getElementById('beijingTime').innerText = `北京时间：${timeStr}`;
-        }
-        updateTime();
-        setInterval(updateTime, 1000);
 
-        // 樱花飘落特效
-        function createSakura() {
-            const sakura = document.createElement('div');
-            sakura.classList.add('sakura');
-            const size = Math.random() * 15 + 8;
-            sakura.style.width = `${size}px`;
-            sakura.style.height = `${size}px`;
-            sakura.style.left = `${Math.random() * 100}vw`;
-            const fallTime = Math.random() * 5 + 4;
-            sakura.style.animationDuration = `${fallTime}s`;
-            document.body.appendChild(sakura);
-            setTimeout(() => sakura.remove(), fallTime * 1000);
-        }
-        setInterval(createSakura, 100);
-    </script>
+<script>
+// 初始化+每秒更新时间
+function updateTime(){
+  var now = new Date();
+  var h = now.getHours();
+  var m = now.getMinutes();
+  var s = now.getSeconds();
+
+  // 补零
+  h = h < 10 ? "0" + h : h;
+  m = m < 10 ? "0" + m : m;
+  s = s < 10 ? "0" + s : s;
+
+  document.getElementById("nowTime").innerText = "北京时间：" + h + ":" + m + ":" + s;
+}
+
+// 先执行一次，保证页面打开就有时间
+updateTime();
+setInterval(updateTime, 1000);
+
+// 樱花
+function createSakura(){
+  var el = document.createElement("div");
+  el.className = "sakura";
+  el.style.left = Math.random() * 100 + "vw";
+  var size = 8 + Math.random() * 12;
+  el.style.width = size + "px";
+  el.style.height = size + "px";
+  var dur = 4 + Math.random() * 6;
+  el.style.animationDuration = dur + "s";
+  document.body.appendChild(el);
+  setTimeout(function(){
+    el.remove();
+  }, dur * 1000);
+}
+setInterval(createSakura, 150);
+</script>
 </body>
 </html>
