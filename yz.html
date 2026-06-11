@@ -16,6 +16,7 @@
             overflow: hidden;
             background: #0b132b;
             font-family: "Microsoft Yahei", sans-serif;
+            /* 垂直水平居中所有内容 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -30,9 +31,8 @@
             background-clip: text;
             color: transparent;
             margin-bottom: 30px;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
         }
-        /* 北京时间 */
+        /* 北京时间样式 */
         .time {
             font-size: 36px;
             color: #ffffff;
@@ -45,18 +45,20 @@
             color: #ff4444;
             font-weight: 500;
         }
-        /* 樱花花瓣样式 */
+        /* 樱花花瓣样式 + 动画 */
         .sakura {
             position: fixed;
-            top: -10px;
+            top: -15px;
+            width: 12px;
+            height: 12px;
             background: #ffc0cb;
             border-radius: 50%;
-            opacity: 0.8;
+            opacity: 0.85;
             pointer-events: none;
-            animation: fall linear infinite;
+            animation: sakuraFall linear infinite;
         }
-        /* 飘落动画 */
-        @keyframes fall {
+        /* 花瓣下落动画关键帧 */
+        @keyframes sakuraFall {
             0% {
                 transform: translateY(0) rotate(0deg);
             }
@@ -67,47 +69,67 @@
     </style>
 </head>
 <body>
+    <!-- 主内容区域 -->
     <h1 class="title">ys拦截成功</h1>
     <div class="time" id="beijingTime"></div>
     <div class="tip">本拦截不会自动关闭需执行恢复文件</div>
 
+    <!-- 背景音乐 FLAC 循环播放 -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="Paperman-Life Struggle (宿命).flac" type="audio/flac">
+        当前浏览器不支持FLAC音频格式
+    
+
     <script>
-        // 1. 实时更新北京时间
+        // ========== 1. 背景音乐处理（解决浏览器自动播放限制） ==========
+        const bgMusic = document.getElementById('bgMusic');
+        // 点击页面任意位置播放音乐
+        document.body.addEventListener('click', () => {
+            bgMusic.play();
+        }, { once: true });
+
+        // ========== 2. 实时北京时间 ==========
         function updateTime() {
             const now = new Date();
-            const options = {
+            const timeStr = now.toLocaleTimeString('zh-CN', {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
                 hour12: false
-            };
-            const timeStr = now.toLocaleTimeString('zh-CN', options);
-            document.getElementById('beijingTime').innerText = "北京时间：" + timeStr;
+            });
+            document.getElementById('beijingTime').innerText = `北京时间：${timeStr}`;
         }
         updateTime();
         setInterval(updateTime, 1000);
 
-        // 2. 樱花飘落特效
+        // ========== 3. 樱花飘落特效（完整修复） ==========
         function createSakura() {
+            // 创建花瓣元素
             const sakura = document.createElement('div');
             sakura.classList.add('sakura');
-            // 随机大小
-            const size = Math.random() * 12 + 6;
-            sakura.style.width = size + 'px';
-            sakura.style.height = size + 'px';
-            // 随机水平位置
-            sakura.style.left = Math.random() * 100 + 'vw';
-            // 随机下落时长
-            const duration = Math.random() * 6 + 4;
-            sakura.style.animationDuration = duration + 's';
+
+            // 随机花瓣大小
+            const size = Math.random() * 15 + 8;
+            sakura.style.width = `${size}px`;
+            sakura.style.height = `${size}px`;
+
+            // 随机水平位置（全屏左右）
+            sakura.style.left = `${Math.random() * 100}vw`;
+
+            // 随机下落速度 4~9秒
+            const fallTime = Math.random() * 5 + 4;
+            sakura.style.animationDuration = `${fallTime}s`;
+
+            // 添加到页面
             document.body.appendChild(sakura);
-            // 花瓣落地后移除
+
+            // 花瓣落地后自动删除，避免元素堆积
             setTimeout(() => {
                 sakura.remove();
-            }, duration * 1000);
+            }, fallTime * 1000);
         }
-        // 持续生成花瓣
-        setInterval(createSakura, 120);
+        // 持续生成花瓣（每100ms一个，密度适中）
+        setInterval(createSakura, 100);
     </script>
 </body>
 </html>
