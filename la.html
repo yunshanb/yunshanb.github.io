@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>致我的大淼</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, "微软雅黑", sans-serif;
+        }
+        html, body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffb6c1, #ffe6ef, #ffc8dd);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #c41e3a;
+            position: relative;
+        }
+
+        /* 樱花飘落动画 */
+        .sakura {
+            position: fixed;
+            background: #ffd6e0;
+            border-radius: 50% 0 50% 50%;
+            opacity: 0.85;
+            pointer-events: none;
+            animation: sakuraFall linear infinite;
+            z-index: 1;
+        }
+        @keyframes sakuraFall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* 点击樱花特效 */
+        .click-sakura {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ffc0cb;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: clickSakura 1s ease-out forwards;
+            z-index: 999;
+        }
+        @keyframes clickSakura {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0) translateY(-80px);
+                opacity: 0;
+            }
+        }
+
+        /* 爱心爆炸粒子 */
+        .heart-bomb {
+            position: fixed;
+            font-size: 24px;
+            color: #ff3366;
+            pointer-events: none;
+            animation: bomb 1.2s ease-out forwards;
+        }
+        @keyframes bomb {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2) translate(var(--x), var(--y)); opacity: 0; }
+        }
+
+        /* 闪烁星光 */
+        .star {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+            z-index: 0;
+        }
+        @keyframes twinkle {
+            0%,100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        /* 主卡片 */
+        .box {
+            background: rgba(255,255,255,0.92);
+            padding: 40px 20px;
+            border-radius: 22px;
+            box-shadow: 0 8px 30px rgba(255, 60, 120, 0.25);
+            text-align: center;
+            width: 90%;
+            max-width: 420px;
+            z-index: 10;
+            position: relative;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .text {
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 20px 0;
+        }
+
+        /* 好感度进度条 */
+        .progress-wrap {
+            width: 100%;
+            height: 22px;
+            background: #f8d8e2;
+            border-radius: 12px;
+            margin: 25px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff5e88, #ff2e63);
+            border-radius: 12px;
+            transition: 2s all ease-in-out;
+        }
+
+        /* 按钮组布局 */
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .btn {
+            padding: 12px 10px;
+            border: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn1 { background: #ff477e; }
+        .btn2 { background: #ff70a6; }
+        .btn3 { background: #ff8fb1; }
+        .btn4 { background: #ff5588; }
+        .btn:active {
+            transform: scale(0.96);
+            opacity: 0.9;
+        }
+
+        /* 弹窗通用样式 */
+        .mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .pop {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 18px;
+            width: 85%;
+            max-width: 360px;
+            text-align: center;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .pop p {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .close {
+            padding: 8px 22px;
+            background: #ff5577;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* 底部专属文案 */
+        .footer-text {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #ff6688;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🌸 致我的大淼</h1>
+        <p class="text">
+            世界乱糟糟，但你干干净净<br>
+            一想到大淼，心里就软成棉花糖<br>
+            每天最期待的事，就是和你聊天见面<br>
+            往后所有温柔和偏爱，全都只给大淼一人
+        </p>
+        <div>
+            <p>对大淼的心动好感度</p>
+            <div class="progress-wrap">
+                <div class="progress-bar" id="progress"></div>
+            </div>
+            <span id="progress-text">正在加载心动...0%</span>
+        </div>
+
+        <!-- 新增4个功能按钮 -->
+        <div class="btn-group">
+            <button class="btn btn1" onclick="showLove()">随机甜言蜜语</button>
+            <button class="btn btn2" onclick="showAlbum()">我们的回忆相册</button>
+            <button class="btn btn3" onclick="heartBoom()">爱心爆炸特效</button>
+            <button class="btn btn4" onclick="showMemo()">给大淼的悄悄话</button>
+        </div>
+
+        <div class="footer-text">
+            山河辽阔 人间烟火 ❤️ 我只偏爱大淼
+        </div>
+    </div>
+
+    <!-- 通用弹窗 -->
+    <div class="mask" id="mask">
+        <div class="pop">
+            <p id="popText"></p>
+            <button class="close" onclick="closePop()">收下爱意</button>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function(){
+            // 1.自动樱花飘落
+            function createSakura() {
+                const sakura = document.createElement('div');
+                sakura.className = 'sakura';
+                const size = Math.random() * 12 + 6;
+                sakura.style.width = size + 'px';
+                sakura.style.height = size + 'px';
+                sakura.style.left = Math.random() * 100 + 'vw';
+                sakura.style.animationDuration = Math.random() * 4 + 3 + 's';
+                document.body.appendChild(sakura);
+                setTimeout(()=>sakura.remove(), 7000);
+            }
+            setInterval(createSakura, 200);
+
+            // 2.闪烁星光
+            function createStar() {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random()*100+'vw';
+                star.style.top = Math.random()*100+'vh';
+                star.style.animationDelay = Math.random()*2+'s';
+                document.body.appendChild(star);
+            }
+            for(let i=0;i<80;i++) createStar();
+
+            // 3.点击樱花特效
+            document.addEventListener('click',function(e){
+                for(let i=0;i<6;i++){
+                    let s = document.createElement('div');
+                    s.className = 'click-sakura';
+                    s.style.left = e.clientX+'px';
+                    s.style.top = e.clientY+'px';
+                    document.body.appendChild(s);
+                    setTimeout(()=>s.remove(),1000);
+                }
+            })
+
+            // 4.好感度自动涨到100%
+            let num = 0;
+            let progress = document.getElementById('progress');
+            let pText = document.getElementById('progress-text');
+            let timer = setInterval(()=>{
+                if(num < 100){
+                    num++;
+                    progress.style.width = num+'%';
+                    pText.innerText = `专属心动值：${num}% 满心皆是大淼`;
+                }else{
+                    clearInterval(timer);
+                }
+            },30)
+        }
+
+        // 弹窗控制
+        const mask = document.getElementById('mask');
+        const popText = document.getElementById('popText');
+        function closePop() { mask.style.display = 'none'; }
+
+        // 按钮1：随机情话
+        const words = [
+            "别人再好与我无关，我的大淼我超喜欢",
+            "我攒了好多温柔，全部留给我的大淼",
+            "遇见大淼之后，我再也没羡慕过任何人",
+            "我的愿望很小，只有四个字：和大淼长久",
+            "没什么大事，就是时时刻刻超级想大淼",
+            "不用刻意改变，大淼本来就是我最喜欢的样子",
+            "人间无趣，但有大淼，万事皆甜",
+            "以后的春夏秋冬，我都想陪在大淼身边",
+            "你是落日弥漫的橘，天边透亮的星，我的大淼满心欢喜",
+            "一看见大淼，所有坏情绪瞬间全部消失",
+            "大淼，岁岁年年，万物更替，我永远偏爱你",
+            "我的世界很小，小到刚好只装得下一个大淼",
+            "温柔留给晚风，爱意永远留给我的大淼"
+        ];
+        function showLove() {
+            let random = Math.floor(Math.random() * words.length);
+            popText.innerText = words[random];
+            mask.style.display = 'flex';
+        }
+
+        // 按钮2：回忆相册文案（可自行替换你们的故事）
+        function showAlbum() {
+            popText.innerHTML = `💞 专属我们的回忆簿<br><br>
+            第一次见面：满眼都是你<br>
+            一起吃过的饭、走过的路<br>
+            所有细碎小事，全部珍藏<br>
+            未来还有无数个朝夕，和大淼慢慢书写`;
+            mask.style.display = 'flex';
+        }
+
+        // 按钮3：全屏爱心爆炸特效
+        function heartBoom() {
+            // 在屏幕中心生成30个散开爱心
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            for(let i=0; i<30; i++){
+                let heart = document.createElement('div');
+                heart.className = 'heart-bomb';
+                heart.innerText = '♥';
+                // 随机散开方向
+                let angle = (i / 30) * Math.PI * 2;
+                let distance = 120 + Math.random() * 180;
+                let x = Math.cos(angle) * distance;
+                let y = Math.sin(angle) * distance;
+                heart.style.setProperty('--x', `${x}px`);
+                heart.style.setProperty('--y', `${y}px`);
+                heart.style.left = centerX + 'px';
+                heart.style.top = centerY + 'px';
+                document.body.appendChild(heart);
+                setTimeout(()=>heart.remove(), 1200);
+            }
+        }
+
+        // 按钮4：悄悄话备忘录
+        function showMemo() {
+            popText.innerHTML = `📝 写给大淼的悄悄话<br><br>
+            1. 不开心一定要告诉我，我永远是你的避风港<br>
+            2. 不用懂事，在我这里你可以随心所欲撒娇<br>
+            3. 所有计划里，永远都有你的位置<br>
+            4. 不用攀比，你就是我独一无二的宝藏<br>
+            5. 长久不是一时新鲜感，是年年岁岁偏爱大淼`;
+            mask.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
